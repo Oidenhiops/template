@@ -44,78 +44,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f24b7143c5664dd4794c1bc471937b4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemsDB: {fileID: 11400000, guid: fcfffaa77147a9940894d710ef06fdb3, type: 2}
-  skillsDB: {fileID: 11400000, guid: 3cdbef6d97e299b4993574b5b6a8d4ea, type: 2}
-  charactersDBSO: {fileID: 11400000, guid: ef86327c819f67f4a842076c8329b89b, type: 2}
   saveData:
-    gameInfo:
-      characterInfo:
-        isInitialize: 0
-        characterName: 
-        level: 0
-        characterSelectedId: 0
-        characterSelected:
-          initialDataSO: {fileID: 0}
-          isUnlock: 0
-        currentSkills:
-        - skillId: 0
-          skillData: {fileID: 0}
-          cdInfo:
-            cd: 0
-            currentCD: 0
-        - skillId: 0
-          skillData: {fileID: 0}
-          cdInfo:
-            cd: 0
-            currentCD: 0
-        - skillId: 0
-          skillData: {fileID: 0}
-          cdInfo:
-            cd: 0
-            currentCD: 0
-        - skillId: 0
-          skillData: {fileID: 0}
-          cdInfo:
-            cd: 0
-            currentCD: 0
-        currentObjects:
-        - objectId: 0
-          objectData: {fileID: 0}
-          amount: 0
-          isUsingItem: 0
-          objectInstance: {fileID: 0}
-        - objectId: 0
-          objectData: {fileID: 0}
-          amount: 0
-          isUsingItem: 0
-          objectInstance: {fileID: 0}
-        - objectId: 0
-          objectData: {fileID: 0}
-          amount: 0
-          isUsingItem: 0
-          objectInstance: {fileID: 0}
-        - objectId: 0
-          objectData: {fileID: 0}
-          amount: 0
-          isUsingItem: 0
-          objectInstance: {fileID: 0}
-        - objectId: 0
-          objectData: {fileID: 0}
-          amount: 0
-          isUsingItem: 0
-          objectInstance: {fileID: 0}
-        - objectId: 0
-          objectData: {fileID: 0}
-          amount: 0
-          isUsingItem: 0
-          objectInstance: {fileID: 0}
     configurationsInfo:
       _currentLanguage: 0
       _canShowFps: 0
       FpsLimit: 0
       resolutionConfiguration:
         isFullScreen: 0
-        allResolutions: []
         currentResolution:
           width: 0
           height: 0
@@ -124,3 +59,10 @@ MonoBehaviour:
         MASTERValue: 0
         BGMalue: 0
         SFXalue: 0
+    bgmSceneInfo:
+      BGMSceneData:
+        _serializedList: []
+  systemData:
+    allResolutions: []
+  initialBGMSoundsConfigSO: {fileID: 11400000, guid: e0794015d6e098949a0ed3bcec3c4570,
+    type: 2}

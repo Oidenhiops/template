@@ -9,7 +9,9 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance { get; private set; }
     public AudioMixer audioMixer;
+    public AudioSource bgmSource;
     public SoundsDBSO soundsDB;
+    public SerializedDictionary<string, InitialBGMSoundsConfigSO.BGMScenesData> BGMSceneData = new SerializedDictionary<string, InitialBGMSoundsConfigSO.BGMScenesData>();
     void Awake()
     {
         if (Instance == null)
@@ -45,6 +47,12 @@ public class AudioManager : MonoBehaviour
         audioBox.Play();
         audioBoxInstance = audioBox.gameObject;
         StartCoroutine(DestroyAudioBox(audioBox.gameObject, audioClip.length));
+    }
+    public void ChangeBGM(InitialBGMSoundsConfigSO.BGMScenesData bgmData)
+    {
+        bgmSource.Stop();
+        bgmSource.clip = GetAudioClip(SoundsDBSO.TypeSound.BGM, bgmData.otherClip != "" ? bgmData.otherClip : bgmData.defaultClip);
+        bgmSource.Play();
     }
     public async Awaitable FadeIn()
     {

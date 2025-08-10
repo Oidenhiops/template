@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
 using System;
+using AYellowpaper.SerializedCollections;
 
 public class GameData : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class GameData : MonoBehaviour
     string nameSaveData = "SaveData.json";
     public SaveData saveData = new SaveData();
     public SystemData systemData = new SystemData();
+    public InitialBGMSoundsConfigSO initialBGMSoundsConfigSO;
     public Dictionary<TypeLOCS, List<string[]>> locs = new Dictionary<TypeLOCS, List<string[]>>();
     void Awake()
     {
@@ -16,12 +18,13 @@ public class GameData : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            GameManager.Instance.currentScene = GameManager.TypeScene.HomeScene.ToString();
+            _ = LoadData();
         }
         else
         {
             Destroy(gameObject);
         }
-        _ = LoadData();
     }
     public async Awaitable LoadData()
     {
@@ -32,6 +35,7 @@ public class GameData : MonoBehaviour
             saveData = ReadDataFromJson();
             LoadLOCS();
             InitializeResolutionData();
+            InitializeBGM();
             Application.targetFrameRate = saveData.configurationsInfo.FpsLimit;
             await InitializeAudioMixerData();
             saveData.configurationsInfo.canShowFps = true;
@@ -42,6 +46,15 @@ public class GameData : MonoBehaviour
             await Awaitable.NextFrameAsync();
         }
     }
+
+    private void InitializeBGM()
+    {
+        if (saveData.bgmSceneData.TryGetValue("HomeScene", out InitialBGMSoundsConfigSO.BGMScenesData bgmScenesData))
+        {
+            AudioManager.Instance.ChangeBGM(bgmScenesData);
+        }
+    }
+
     private void GetAllResolutions()
     {
         Resolution[] resolutions = Screen.resolutions;
@@ -149,13 +162,20 @@ public class GameData : MonoBehaviour
     {
         SaveData dataInfo = new SaveData();
         dataInfo.configurationsInfo.currentLanguage = TypeLanguage.English;
-        SetStartingDataSound(dataInfo);
+        SetStartingDataSound(ref dataInfo);
+        GetInitialConfigBGMS(ref dataInfo);
         GetAllResolutions();
         if (GameManager.Instance.currentDevice == GameManager.TypeDevice.PC) SetStartingResolution(ref dataInfo);
         saveData = dataInfo;
         SaveGameData();
     }
-    void SetStartingDataSound(SaveData dataInfo)
+
+    private void GetInitialConfigBGMS(ref SaveData dataInfo)
+    {
+        dataInfo.bgmSceneData = initialBGMSoundsConfigSO.Clone();
+    }
+
+    void SetStartingDataSound(ref SaveData dataInfo)
     {
         dataInfo.configurationsInfo.soundConfiguration.MASTERValue = 25;
         dataInfo.configurationsInfo.soundConfiguration.BGMalue = 25;
@@ -215,6 +235,7 @@ public class GameData : MonoBehaviour
     [Serializable] public class SaveData
     {
         public ConfigurationsInfo configurationsInfo = new ConfigurationsInfo();
+        public SerializedDictionary<string, InitialBGMSoundsConfigSO.BGMScenesData> bgmSceneData = new SerializedDictionary<string, InitialBGMSoundsConfigSO.BGMScenesData>();
     }
     [Serializable] public class ConfigurationsInfo
     {

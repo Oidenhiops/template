@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: PergamusGames
-  productName: Echoes of the abyss
+  productName: Plantilla
   defaultCursor: {fileID: 2800000, guid: e43cf4c0ca51cec42a1defa1fcef2104, type: 3}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0, g: 0, b: 0, a: 1}
@@ -166,7 +166,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   androidMinAspectRatio: 1
   applicationIdentifier:
-    Android: com.PergamusGames.EchoesOfTheAbyss
+    Android: com.PergamusGames.Plantilla
     Standalone: com.Unity-Technologies.com.unity.template.urp-blank
     iPhone: com.Unity-Technologies.com.unity.template.urp-blank
   buildNumber:

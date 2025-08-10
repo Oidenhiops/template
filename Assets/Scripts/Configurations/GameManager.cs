@@ -1,12 +1,9 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
-
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
@@ -32,6 +29,7 @@ public class GameManager : MonoBehaviour
     public bool _startGame;
     public Action<bool> OnStartGame;
     public InputAction pauseButton;
+    public string currentScene;
     string[] _excludedScenesForPause = { "CreditsScene", "HomeScene", "OptionsScene" };
     public bool startGame
     {
@@ -102,10 +100,11 @@ public class GameManager : MonoBehaviour
         try
         {
             startGame = false;
-            openCloseScene.sceneToGo = typeScene.ToString();
+            currentScene = typeScene.ToString();
             openCloseScene.openCloseSceneAnimator.SetBool("Out", true);
             OnChangeScene?.Invoke();
             await AudioManager.Instance.FadeOut();
+            AudioManager.Instance.ChangeBGM(GameData.Instance.saveData.bgmSceneData[currentScene]);
             while (!openCloseScene.openCloseSceneAnimator.GetCurrentAnimatorStateInfo(0).IsName("OpenCloseSceneIdle")) await Task.Delay(TimeSpan.FromSeconds(0.01)); ;
             if (typeScene == TypeScene.Reload)
             {

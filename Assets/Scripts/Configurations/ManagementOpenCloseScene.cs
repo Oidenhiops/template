@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public class ManagementOpenCloseScene : MonoBehaviour
 {
     public Animator openCloseSceneAnimator;
-    public string sceneToGo;
     public bool _finishLoad;
     public Action<bool>OnFinishLoadChange;
     public float speedFill;
@@ -128,7 +127,7 @@ public class ManagementOpenCloseScene : MonoBehaviour
             loaderImage.fillAmount = 0;
             _currentLoad = 0;
             finishLoad = false;
-            if (sceneToGo == "HomeScene" || sceneToGo == "")
+            if (GameManager.Instance.currentScene == "HomeScene" || GameManager.Instance.currentScene == "")
             {
                 StartCoroutine(AutoCharge());
             }

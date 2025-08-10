@@ -17,8 +17,18 @@ MonoBehaviour:
     - Key: 1
       Value:
         _serializedList:
-        - Key: 
-          Value: []
+        - Key: MenuBG
+          Value:
+          - {fileID: 8300000, guid: 31bafb895f6f79042bb86e54428b546a, type: 3}
+        - Key: MenuBG2
+          Value:
+          - {fileID: 8300000, guid: f9d4df4be0166b54f9458a3765788265, type: 3}
+        - Key: MenuBG3
+          Value:
+          - {fileID: 8300000, guid: 08b73ebaea0ebd84291b777479661b17, type: 3}
+        - Key: GameBg
+          Value:
+          - {fileID: 8300000, guid: a612d49759e71fe48bce9300b3756900, type: 3}
     - Key: 2
       Value:
         _serializedList:
