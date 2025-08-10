@@ -17,8 +17,6 @@ public class ManagementOptions : MonoBehaviour
     public ButtonBackInfo buttonBackInfo;
     public GameObject homeButton;
     public GameObject muteCheck;
-    public GameObject resolutionButtons;
-    public ControlsInfo[] controlsInfo;
     public InputAction backButton;
     public GameManagerHelper gameManagerHelper;
     void OnEnable()
@@ -35,7 +33,7 @@ public class ManagementOptions : MonoBehaviour
         backButton.started += BackHandle;
         backButton.Enable();
         if (GameManager.Instance.currentDevice == GameManager.TypeDevice.PC) Cursor.visible = true;
-        ChangeMenuButtons(GameManager.Instance.currentDevice);
+        ChangeMenuButtons(GameManager.Instance.principalDevice, GameManager.Instance.currentDevice);
         muteCheck.SetActive(GameData.Instance.saveData.configurationsInfo.soundConfiguration.isMute);
         if (SceneManager.GetSceneByName("HomeScene").isLoaded) homeButton.SetActive(false);
     }
@@ -105,9 +103,8 @@ public class ManagementOptions : MonoBehaviour
                     {
                         EventSystem.current.SetSelectedGameObject
                         (
-                            resolutionButtons.activeSelf ? 
-                            buttonsBackInfos[0].buttonsToSelect[0] :
-                            buttonsBackInfos[0].buttonsToSelect[1]
+                            GameManager.Instance.currentDevice == GameManager.TypeDevice.MOBILE ?                             
+                            buttonsBackInfos[0].buttonsToSelect[1] : buttonsBackInfos[0].buttonsToSelect[0]
                         );
                     }
                     else 
@@ -291,22 +288,8 @@ public class ManagementOptions : MonoBehaviour
         int height = int.Parse(resolution.ToString().Substring(index + 1));
         return new GameData.ResolutionsInfo(width, height);
     }
-    public void ChangeMenuButtons(GameManager.TypeDevice typeDevice)
+    public void ChangeMenuButtons(GameManager.TypeDevice principalDevice, GameManager.TypeDevice typeDevice)
     {
-        foreach (ControlsInfo control in controlsInfo)
-        {
-            control.container.SetActive(control.typeDevice == typeDevice);
-        }
-        if (typeDevice != GameManager.TypeDevice.MOBILE)
-        {
-            resolutionButtons.SetActive(true);
-            buttonsBackInfos[2].buttonToBack.gameObject.SetActive(true);
-        }
-        else
-        {
-            resolutionButtons.SetActive(false);
-            buttonsBackInfos[2].buttonToBack.gameObject.SetActive(false);
-        }
         ChangeNavigationButtons();
     }
     public void ChangeNavigationButtons()

@@ -11,8 +11,9 @@ public class GameManager : MonoBehaviour
     public bool isPause;
     public bool isWebGlBuild;
     public bool lockDevice = false;
+    public TypeDevice principalDevice;
     public TypeDevice _currentDevice;
-    public event Action<TypeDevice> OnDeviceChanged;
+    public event Action<TypeDevice, TypeDevice> OnDeviceChanged;
     public Action OnChangeScene;
     public TypeDevice currentDevice
     {
@@ -22,7 +23,7 @@ public class GameManager : MonoBehaviour
             if (_currentDevice != value)
             {
                 _currentDevice = value;
-                OnDeviceChanged?.Invoke(_currentDevice);
+                OnDeviceChanged?.Invoke(principalDevice, _currentDevice);
             }
         }
     }
@@ -64,9 +65,9 @@ public class GameManager : MonoBehaviour
     {
         SetInitialDevice();
         OnDeviceChanged += ValidateActiveMouse;
-        ValidateActiveMouse(currentDevice);
+        ValidateActiveMouse(principalDevice,currentDevice);
     }
-    void FixedUpdate()
+    void LateUpdate()
     {
         CheckCurrentDevice();
     }
@@ -129,15 +130,15 @@ public class GameManager : MonoBehaviour
             await Task.Delay(TimeSpan.FromSeconds(0.05));
         }
     }
-    public void ValidateActiveMouse(TypeDevice typeDevice)
+    public void ValidateActiveMouse(TypeDevice principalDevice, TypeDevice typeDevice)
     {
-        if (typeDevice == TypeDevice.PC)
+        if (principalDevice == TypeDevice.PC)
         {
-            UnityEngine.Cursor.visible = true;
+            Cursor.visible = true;
         }
         else
         {
-            UnityEngine.Cursor.visible = false;
+            Cursor.visible = false;
         }
     }
     public void SetInitialDevice()
@@ -146,10 +147,12 @@ public class GameManager : MonoBehaviour
         {
             if (Gamepad.current != null)
             {
+                principalDevice = TypeDevice.PC;
                 currentDevice = TypeDevice.GAMEPAD;
             }
             else if (Touchscreen.current != null)
             {
+                principalDevice = TypeDevice.MOBILE;
                 currentDevice = TypeDevice.MOBILE;
             }
             else if (Application.platform == RuntimePlatform.WindowsEditor ||
@@ -157,6 +160,7 @@ public class GameManager : MonoBehaviour
                  Application.platform == RuntimePlatform.OSXPlayer ||
                  Application.platform == RuntimePlatform.LinuxPlayer)
             {
+                principalDevice = TypeDevice.PC;
                 currentDevice = TypeDevice.PC;
             }
         }

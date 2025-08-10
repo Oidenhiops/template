@@ -3,32 +3,42 @@ using AYellowpaper.SerializedCollections;
 using UnityEngine;
 public class MultiDeviceButton : MonoBehaviour
 {
-    public SerializedDictionary<GameManager.TypeDevice, GameObject> buttons;
+    public SerializedDictionary<DeviceInfo, GameObject[]> buttons;
     void Start()
     {
-        ValidateScreenButton(GameManager.Instance._currentDevice);
+        ValidateScreenButton(GameManager.Instance.principalDevice, GameManager.Instance.currentDevice);
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.OnDeviceChanged += ValidateScreenButton;   
-        }      
+            GameManager.Instance.OnDeviceChanged += ValidateScreenButton;
+        }
     }
     void OnDestroy()
     {
         GameManager.Instance.OnDeviceChanged -= ValidateScreenButton;
     }
-    void ValidateScreenButton(GameManager.TypeDevice device)
+    void ValidateScreenButton(GameManager.TypeDevice principalDevice, GameManager.TypeDevice currentDevice)
     {
         foreach (var button in buttons)
         {
-            if (device == GameManager.TypeDevice.PC && button.Key == GameManager.TypeDevice.GAMEPAD ||
-                device == GameManager.TypeDevice.GAMEPAD && button.Key == GameManager.TypeDevice.PC)
+            foreach (var deviceButton in button.Value)
             {
-                button.Value.SetActive(buttons[GameManager.TypeDevice.PC] == buttons[GameManager.TypeDevice.GAMEPAD]);
-            }
-            else
-            {
-                button.Value.SetActive(button.Key == device);
+                deviceButton.SetActive(false);
             }
         }
+        foreach (var button in buttons)
+        {
+            if (button.Key.principalDevice == principalDevice && button.Key.possibleDevices.Contains(currentDevice))
+            {
+                foreach (var deviceButton in button.Value)
+                {
+                    deviceButton.SetActive(true);
+                }
+            }
+        }
+    }
+    [System.Serializable] public class DeviceInfo
+    {
+        public GameManager.TypeDevice principalDevice;
+        public GameManager.TypeDevice[] possibleDevices;
     }
 }

@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class OnObjectSelect : MonoBehaviour, ISelectHandler
 {
     public bool isDropDown;
+    public Toggle toggle;
     public TMP_Dropdown dropdown;
     public DropdownSelected dropdownSelected;
     public float marginToDetect = 5;
@@ -56,10 +57,6 @@ public class OnObjectSelect : MonoBehaviour, ISelectHandler
                 scrollRect.verticalNormalizedPosition = 1 - sizeItemInViewport * (direction < 0 ? Mathf.Abs(index - (maxItemsInView - 1)) : index);
             }
         }
-    }
-    public void ForceScroll(int pos)
-    {        
-        scrollRect.verticalNormalizedPosition = 1 - sizeItemInViewport * Mathf.Abs(pos - maxItemsInView);
     }
     public bool IsItemVisible(RectTransform itemToCheck, out int direction)
     {
